@@ -1,4 +1,18 @@
+from tkinter import *
+
+window = Tk()
+window.title("웹사이트별 가격 비교")
+window.geometry("1920x1080")
+
+label = Label(window, text="테스트", font=("Arial", 100))
+label.pack()
+
+window.mainloop()
+
 #제품명입력
+from inputAndURLpkg import getProductName
+getProductName.getProductName()
+
 
 #각웹사이트의 검색URL 생성
 
