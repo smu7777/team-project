@@ -88,11 +88,3 @@ def compare_prices(query):
         browser.close()
         return results
 
-# 실행 부분
-if __name__ == "__main__":
-    query = input("🔍 검색할 상품명을 입력하세요: ")
-    results = compare_prices(query)
-
-    print("\n📊 가격 비교 결과:")
-    for site, title, price in results:
-        print(f"\n[{site}]\n상품명: {title}\n가격: {price}")

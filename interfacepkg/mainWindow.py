@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 
+query = None
+
 def makingWindow():
     # 메인 윈도우 설정
     window = Tk()
@@ -21,11 +23,14 @@ def makingWindow():
 
     # 검색 기능 구현
     def productSearch():
+        # 파싱함수에서 query를 가져와서 사용하기 위해 전역변수로 설정
+        global query
         query = entry.get()
         if not query.strip():
             messagebox.showwarning("입력 오류", "상품명을 입력하세요.")
             return
         searchLoading.config(text="검색 중입니다...")
+        # 여기서 파싱을 마쳐야함...
 
     # 검색 버튼
     searchButton = Button(window, text="검색", command=productSearch, font=("나눔명조", 24), width=10)
@@ -33,3 +38,6 @@ def makingWindow():
 
     # GUI 실행
     window.mainloop()
+
+def getQuery():
+    return query
