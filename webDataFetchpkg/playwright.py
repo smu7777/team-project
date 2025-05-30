@@ -73,6 +73,29 @@ def crawl_amazon(query, context):
     page.close()
     return ("Amazon", title, price)
 
+# eBay 크롤링 함수 (정확한 상품 리스트 반영)
+def crawl_ebay(query, context):
+    page = context.new_page()
+    url = f"https://www.ebay.com/sch/i.html?_nkw={query}"
+    page.goto(url)
+
+    try:
+        page.wait_for_timeout(3000)
+        page.screenshot(path="ebay_debug.png")
+
+        title_elem = page.query_selector("li.s-item h3.s-item__title")
+        price_elem = page.query_selector("li.s-item span.s-item__price")
+
+        title = title_elem.inner_text() if title_elem else "상품명 없음"
+        price = price_elem.inner_text() if price_elem else "가격 없음"
+    except Exception as e:
+        page.screenshot(path="ebay_error.png")
+        print("[eBay 오류]", e)
+        title = "상품명 없음"
+        price = "가격 없음"
+    page.close()
+    return ("eBay", title, price)
+
 # 메인 비교 함수
 def compare_prices(query):
     with sync_playwright() as p:
@@ -82,7 +105,8 @@ def compare_prices(query):
         results = [
             crawl_naver(query, context),
             crawl_11st(query, context),
-            crawl_amazon(query, context)
+            crawl_amazon(query, context),
+            crawl_ebay(query, context)
         ]
 
         browser.close()
