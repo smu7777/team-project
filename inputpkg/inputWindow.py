@@ -31,7 +31,7 @@ def makeInputWindow():
             return
         searchLoading.config(text="검색 중입니다...")
         window.update()
-        window.destory()
+        window.destroy()
         
 
     # 검색 버튼
