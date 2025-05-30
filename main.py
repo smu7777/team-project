@@ -1,14 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
-from interfacepkg.mainWindow import makeWindow, getQuery
+from inputpkg.inputWindow import makeInputWindow, getQuery
 from webDataFetchpkg.playwright import compare_prices
-from makeListpkg.compileResultList import makeList
-from makeListpkg.outputExtractData import printList
+from ListAndOutputpkg.compileResultList import makeList
+from ListAndOutputpkg.outputWindow import printList
 
 # 실행은 여기서 합니다
 
 # 메인 윈도우 만들기
-makeWindow()
+makeInputWindow()
 
 # 상품명 가져오기 및 확인
 query = getQuery()
