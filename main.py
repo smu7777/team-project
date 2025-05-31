@@ -1,7 +1,7 @@
 from inputpkg.inputWindow import makeInputWindow, getQuery
-from webDataFetchpkg.playwright import compare_prices
-from ListAndOutputpkg.compileResultList import makeList
-from ListAndOutputpkg.outputWindow import makeOutputWindow
+from webDataFetchpkg.crawlAndCompare import compare_prices
+from listAndOutputpkg.compileResultList import makeList
+from listAndOutputpkg.outputWindow import makeOutputWindow
 
 # 실행은 여기서 합니다
 

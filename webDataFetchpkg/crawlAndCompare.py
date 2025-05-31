@@ -1,8 +1,6 @@
-# ✅ Playwright 기반 가격 비교기: 네이버, 11번가, 아마존 (에어팟 프로 2 기준 셀렉터 최적화)
-
 from playwright.sync_api import sync_playwright
 
-# 네이버 쇼핑 크롤링 함수 (정확한 구조 반영)
+# 네이버 쇼핑 크롤링 함수
 def crawl_naver(query, context):
     page = context.new_page()
     url = f"https://search.shopping.naver.com/search/all?query={query}"
@@ -25,7 +23,7 @@ def crawl_naver(query, context):
     page.close()
     return ("네이버쇼핑", title, price)
 
-# 11번가 크롤링 함수 (정확한 상품 리스트 반영)
+# 11번가 크롤링 함수
 def crawl_11st(query, context):
     page = context.new_page()
     url = f"https://search.11st.co.kr/Search.tmall?kwd={query}"
@@ -49,7 +47,7 @@ def crawl_11st(query, context):
     page.close()
     return ("11번가", title, price)
 
-# 아마존 크롤링 함수 (정상 작동 기준 유지)
+# 아마존 크롤링 함수
 def crawl_amazon(query, context):
     page = context.new_page()
     url = f"https://www.amazon.com/s?k={query}"
@@ -73,7 +71,7 @@ def crawl_amazon(query, context):
     page.close()
     return ("Amazon", title, price)
 
-# eBay 크롤링 함수 (정확한 상품 리스트 반영)
+# eBay 크롤링 함수
 def crawl_ebay(query, context):
     page = context.new_page()
     url = f"https://www.ebay.com/sch/i.html?_nkw={query}"
