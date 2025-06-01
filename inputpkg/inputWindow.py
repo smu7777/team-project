@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 query = None
 
-def makingWindow():
+def makeInputWindow():
     # 메인 윈도우 설정
     window = Tk()
     window.title("웹사이트별 가격 비교 프로그램")
@@ -30,14 +30,17 @@ def makingWindow():
             messagebox.showwarning("입력 오류", "상품명을 입력하세요.")
             return
         searchLoading.config(text="검색 중입니다...")
-        # 여기서 파싱을 마쳐야함...
+        window.update()
+        window.destroy()
+        
 
     # 검색 버튼
     searchButton = Button(window, text="검색", command=productSearch, font=("나눔명조", 24), width=10)
     searchButton.pack(pady=10)
-
+    
     # GUI 실행
     window.mainloop()
 
 def getQuery():
     return query
+
