@@ -94,12 +94,7 @@ def FilterLowestPriceFromCsv(InputCsvPath: str):
         print(f"{DisplayName:<40} {Price:<10} {ProductSite}")
     print("-" * 80)
 
-def Main():
-    # 검색어 입력
-    Query = input("검색어를 입력하세요: ").strip()
-    if not Query:
-        return
-
+def crawlNaver(Query):
     # API 호출
     ClientId = "MzsKEpdM0C7Sd6pHEJaJ"
     ClientSecret = "WdnkycaTdf"
@@ -115,6 +110,3 @@ def Main():
 
     # 최저가 출력
     FilterLowestPriceFromCsv(CsvPath)
-
-if __name__ == "__main__":
-    Main()
