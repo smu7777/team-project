@@ -1,9 +1,11 @@
+# 파일명: CombinedSingle.py
+
 import requests
 import os
 import csv
 
 # 네이버 쇼핑 검색 API 호출
-def SearchNaverShop(Query: str, ClientId: str, ClientSecret: str, Display: int = 10):
+def SearchNaverShop(Query: str, ClientId: str, ClientSecret: str, Display: int = 3):
     NaverUrl = "https://openapi.naver.com/v1/search/shop.json"
     Headers = {
         "X-Naver-Client-Id": ClientId,

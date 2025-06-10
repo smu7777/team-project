@@ -1,111 +1,37 @@
-from playwright.sync_api import sync_playwright
+from .ebayCrawler import search_ebay_with_selenium
+from .gmarketCrawler import search_gmarket_with_selenium
+from .NaverCrawler import SearchNaverShop
 
-# 네이버 쇼핑 크롤링 함수
-def crawl_naver(query, context):
-    page = context.new_page()
-    url = f"https://search.shopping.naver.com/search/all?query={query}"
-    page.goto(url)
-
-    try:
-        page.wait_for_timeout(3000)
-        page.screenshot(path="naver_debug.png")
-
-        title_elem = page.query_selector("div.product_title__BXAaB a")
-        price_elem = page.query_selector("span.price_num__S2p_v")
-
-        title = title_elem.inner_text() if title_elem else "상품명 없음"
-        price = price_elem.inner_text() if price_elem else "가격 없음"
-    except Exception as e:
-        page.screenshot(path="naver_error.png")
-        print("[네이버쇼핑 오류]", e)
-        title = "상품명 없음"
-        price = "가격 없음"
-    page.close()
-    return ("네이버쇼핑", title, price)
-
-# 11번가 크롤링 함수
-def crawl_11st(query, context):
-    page = context.new_page()
-    url = f"https://search.11st.co.kr/Search.tmall?kwd={query}"
-    page.goto(url)
-
-    try:
-        page.wait_for_timeout(3000)
-        page.screenshot(path="11st_debug.png")
-
-        product_elem = page.query_selector("div.c_card_box")
-        title_elem = product_elem.query_selector("div.name") if product_elem else None
-        price_elem = product_elem.query_selector("strong.value") if product_elem else None
-
-        title = title_elem.inner_text() if title_elem else "상품명 없음"
-        price = price_elem.inner_text() if price_elem else "가격 없음"
-    except Exception as e:
-        page.screenshot(path="11st_error.png")
-        print("[11번가 오류]", e)
-        title = "상품명 없음"
-        price = "가격 없음"
-    page.close()
-    return ("11번가", title, price)
-
-# 아마존 크롤링 함수
-def crawl_amazon(query, context):
-    page = context.new_page()
-    url = f"https://www.amazon.com/s?k={query}"
-    page.goto(url)
-
-    try:
-        page.wait_for_timeout(3000)
-        page.screenshot(path="amazon_debug.png")
-
-        product_elem = page.query_selector("div.s-main-slot div[data-component-type='s-search-result']")
-        title_elem = product_elem.query_selector("h2 span") if product_elem else None
-        price_elem = product_elem.query_selector(".a-price .a-offscreen") if product_elem else None
-
-        title = title_elem.inner_text() if title_elem else "상품명 없음"
-        price = price_elem.inner_text() if price_elem else "가격 없음"
-    except Exception as e:
-        page.screenshot(path="amazon_error.png")
-        print("[Amazon 오류]", e)
-        title = "상품명 없음"
-        price = "가격 없음"
-    page.close()
-    return ("Amazon", title, price)
-
-# eBay 크롤링 함수
-def crawl_ebay(query, context):
-    page = context.new_page()
-    url = f"https://www.ebay.com/sch/i.html?_nkw={query}"
-    page.goto(url)
-
-    try:
-        page.wait_for_timeout(3000)
-        page.screenshot(path="ebay_debug.png")
-
-        title_elem = page.query_selector("li.s-item h3.s-item__title")
-        price_elem = page.query_selector("li.s-item span.s-item__price")
-
-        title = title_elem.inner_text() if title_elem else "상품명 없음"
-        price = price_elem.inner_text() if price_elem else "가격 없음"
-    except Exception as e:
-        page.screenshot(path="ebay_error.png")
-        print("[eBay 오류]", e)
-        title = "상품명 없음"
-        price = "가격 없음"
-    page.close()
-    return ("eBay", title, price)
-
-# 메인 비교 함수
 def compare_prices(query):
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+    # 네이버
+    naver_items = SearchNaverShop(query, "MzsKEpdM0C7Sd6pHEJaJ", "WdnkycaTdf", 10)
+    naver_result = []
+    for item in naver_items:
+        price = item.get("lprice", "")
+        if price.isdigit():
+            naver_result.append({
+                "출처": "Naver",
+                "상품명": item.get("title", "").replace("<b>", "").replace("</b>", ""),
+                "가격": int(price),
+                "제품 링크": item.get("link", "")
+            })
 
-        results = [
-            crawl_naver(query, context),
-            crawl_11st(query, context),
-            crawl_amazon(query, context),
-            crawl_ebay(query, context)
-        ]
+    # 이베이
+    ebay_items = search_ebay_with_selenium(query, 10)
+    ebay_result = [{
+        "출처": "eBay",
+        "상품명": item["상품명"],
+        "가격": item["가격"],
+        "제품 링크": item["제품 링크"]
+    } for item in ebay_items]
 
-        browser.close()
-        return results
+    # 지마켓
+    gmarket_items = search_gmarket_with_selenium(query, 10)
+    gmarket_result = [{
+        "출처": "Gmarket",
+        "상품명": item["상품명"],
+        "가격": item["가격"],
+        "제품 링크": item["제품 링크"]
+    } for item in gmarket_items]
+
+    return naver_result + ebay_result + gmarket_result
