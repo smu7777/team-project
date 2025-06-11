@@ -1,9 +1,10 @@
-def makeList(results):
+def makeInfoList(results):
     infoList = []
-    for site, title, price in results:
+    for item in results:
         infoList.append({
-            "사이트": site,
-            "상품명": title,
-            "가격": price
-    })
+            "site": item["source"],
+            "title": item["title"],
+            "price": item["price"],
+            "link": item["link"]
+        })
     return infoList
