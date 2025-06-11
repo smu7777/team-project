@@ -1,7 +1,5 @@
 import requests
 
-
-
 def searchNaverShop(query: str, clientId: str, clientSecret: str, display: int = 10):
     url = "https://openapi.naver.com/v1/search/shop.json"
     headers = {
@@ -26,7 +24,7 @@ def filterItemsByPriceLimit(items):
 
     if prices:
         avgPrice = sum(prices) / len(prices)
-        limit = avgPrice / 3.0
+        limit = avgPrice / 10.0
     else:
         limit = 0
 

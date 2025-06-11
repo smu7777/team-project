@@ -7,13 +7,13 @@ def comparePrices(query):
     naverItems = naverItemResult(query, 30)
     naverResults = []
     for item in naverItems:
-        price = item.get("lprice", "")
-        if price.isdigit():
+        price = item.get("가격", 0)
+        if isinstance(price, int) and price > 0:
             naverResults.append({
                 "source": "Naver",
-                "title": item.get("title", "").replace("<b>", "").replace("</b>", ""),
-                "price": int(price),
-                "link": item.get("link", "")
+                "title": item.get("상품명", ""),
+                "price": price,
+                "link": item.get("제품 링크", "")
             })
 
     # 이베이
@@ -38,7 +38,7 @@ def comparePrices(query):
             "link": item["제품 링크"]
         })
 
-    # 가격 정렬 후 최저가 순으로 20개만 리턴
+    # 가격 정렬 후 최저가 순으로 30개만 리턴
     allResults = naverResults + ebayResults + gmarketResults
     sortedResults = sorted(allResults, key=lambda x: x["price"])
-    return sortedResults[:20]
+    return sortedResults[:30]
