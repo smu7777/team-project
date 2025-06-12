@@ -35,9 +35,10 @@ def searchGmarketWithSelenium(query, maxResults=5):
             link = item.find_element(By.CSS_SELECTOR, "a.link__item").get_attribute("href").strip()
 
             results.append({
-                "상품명": title,
-                "가격": price,
-                "제품 링크": link
+                "source": "Gmarket",
+                "title": title,
+                "price": price,
+                "link": link
             })
 
             if len(results) >= maxResults * 2:  # 넉넉히 가져옴
@@ -49,14 +50,14 @@ def searchGmarketWithSelenium(query, maxResults=5):
     return results
 
 def filterItems(items):
-    prices = [item["가격"] for item in items if item["가격"] > 0]
+    prices = [item["price"] for item in items if item["price"] > 0]
     if prices:
         avgPrice = sum(prices) / len(prices)
         threshold = avgPrice / 3.0
     else:
         threshold = 0
 
-    filteredItems = [item for item in items if item["가격"] > threshold]
+    filteredItems = [item for item in items if item["price"] > threshold]
     return filteredItems
 
 def gmarketItemResult(query, maxResults):

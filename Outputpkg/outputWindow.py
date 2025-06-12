@@ -25,7 +25,7 @@ def makeOutputWindow(infoList):
         frame = Frame(scrollable_frame, bd=1, relief="solid")
         frame.pack(fill="x", padx=20, pady=16)
 
-        labelSite = Label(frame, text=f"[{item['site']}]", font=("나눔명조", 24, "bold"), anchor="w")
+        labelSite = Label(frame, text=f"[{item['source']}]", font=("나눔명조", 24, "bold"), anchor="w")
         labelSite.pack(anchor="w", padx=20, pady=(10, 0))
 
         labelTitle = Label(frame, text=f"상품명: {item['title']}", font=("나눔명조", 20), anchor="w")

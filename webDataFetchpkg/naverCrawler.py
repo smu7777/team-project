@@ -24,7 +24,7 @@ def filterItemsByPriceLimit(items):
 
     if prices:
         avgPrice = sum(prices) / len(prices)
-        limit = avgPrice / 10.0
+        limit = avgPrice / 3.0
     else:
         limit = 0
 
@@ -36,9 +36,10 @@ def filterItemsByPriceLimit(items):
         price = int(priceStr)
         if price > limit:
             filteredItems.append({
-                "상품명": item.get("title", "").replace("<b>", "").replace("</b>", ""),
-                "가격": price,
-                "제품 링크": item.get("link", "")
+                "source": "Naver",
+                "title": item.get("title", "").replace("<b>", "").replace("</b>", ""),
+                "price": price,
+                "link": item.get("link", "")
             })
 
     return filteredItems

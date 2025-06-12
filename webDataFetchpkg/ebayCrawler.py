@@ -43,9 +43,10 @@ def searchEbayWithSelenium(query, maxResults=5):
             link = item.find_element(By.CSS_SELECTOR, ".s-item__link").get_attribute("href").strip()
 
             results.append({
-                "상품명": title,
-                "가격": int(price),
-                "제품 링크": link
+                "source": "eBay",
+                "title": title,
+                "price": int(price),
+                "link": link
             })
 
             if len(results) >= maxResults:
@@ -57,14 +58,14 @@ def searchEbayWithSelenium(query, maxResults=5):
     return results
 
 def filterItemsByPriceThreshold(items):
-    prices = [item["가격"] for item in items if item["가격"] > 0]
+    prices = [item["price"] for item in items if item["price"] > 0]
     if prices:
         avgPrice = sum(prices) / len(prices)
         threshold = avgPrice / 3.0
     else:
         threshold = 0
 
-    filteredItems = [item for item in items if item["가격"] > threshold]
+    filteredItems = [item for item in items if item["price"] > threshold]
     return filteredItems
 
 def ebayItemResult(query, maxResults):
